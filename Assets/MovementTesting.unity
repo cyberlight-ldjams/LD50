@@ -2476,6 +2476,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 648025968006139394, guid: b751ab2b5e4566c4f8b7ac01c1726776, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1581750857}
+    - target: {fileID: 648025968006139394, guid: b751ab2b5e4566c4f8b7ac01c1726776, type: 3}
+      propertyPath: _risingSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 648025968006139421, guid: b751ab2b5e4566c4f8b7ac01c1726776, type: 3}
       propertyPath: m_Name
       value: Water
