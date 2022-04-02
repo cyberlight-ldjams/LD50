@@ -19,9 +19,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float _jumpForce = 10.0f;
 
-    private PlayerControls controls;
+    [SerializeField]
+    private float _playerHeight = 2.0f;
 
-    private bool grounded;
+    private PlayerControls controls;
 
     // Start is called before the first frame update
     void Awake()
@@ -34,19 +35,33 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (grounded)
+        if (IsGrounded())
         {
             Vector3 movement = new Vector3(_move.x * _speed, 0, _move.y * _speed);
             movement = Quaternion.Euler(0, _cameraLocker.transform.rotation.eulerAngles.y, 0) * movement;
             _body.AddForce(movement);
         }
-        if (Mathf.Abs(_body.velocity.y) > 0.1)
+    }
+
+    private bool IsGrounded()
+    {
+        // The player either isn't falling, or is stuck,
+        // so they should count as grounded
+        if (_body.velocity.y < 0.001f)
         {
-            grounded = false;
-        } 
+            return true;
+        }
+
+        Vector3 position = gameObject.transform.position;
+        Vector3 direction = Vector3.down;
+        float distance = _playerHeight / 2.0f;
+
+        if (Physics.Raycast(position, direction, distance)) {
+            return true;
+        }
         else
         {
-            grounded = true;
+            return false;
         }
     }
 
@@ -59,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump()
     {
-        if (grounded)
+        if (IsGrounded())
         {
             _body.AddForce(0, _jumpForce, 0);
         }

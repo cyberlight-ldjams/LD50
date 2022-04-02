@@ -27,7 +27,6 @@ public class CameraMovement : MonoBehaviour
     private void OnMoveCamera()
     {
         Vector2 move = controls.Player.Look.ReadValue<Vector2>();
-        Debug.Log(move);
         gameObject.transform.Rotate(new Vector3(0, move.x * cameraSpeed, 0));
     }
 
