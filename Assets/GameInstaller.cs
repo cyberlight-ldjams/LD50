@@ -5,15 +5,25 @@ using System.Reflection;
 using System;
 using System.Linq;
 
-public class EventInstaller : MonoInstaller
+public class GameInstaller : MonoInstaller
 {
     [SerializeField]
     private GameObject player;
 
     public override void InstallBindings()
     {
-        //install signal bus into container
+        InstallEvents();
 
+        //Player Based Needs
+        Container.Bind<PlayerMovement>().FromComponentInNewPrefab(player).AsSingle().NonLazy();
+        Container.Bind<PlayerControls>().FromInstance(new PlayerControls()).AsSingle();
+    }
+
+
+    // Add all structs that implement IEvent, through reflection.
+    public void InstallEvents()
+    {
+        //Add Signal
         SignalBusInstaller.Install(Container);
         //Grab all the IEvents
         var events = Assembly.GetExecutingAssembly().GetTypes()
@@ -23,7 +33,5 @@ public class EventInstaller : MonoInstaller
         {
             Container.DeclareSignal(type);
         }
-
-        Container.Bind<PlayerMovement>().FromComponentInNewPrefab(player).AsSingle().NonLazy();
     }
 }
