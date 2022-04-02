@@ -11,8 +11,7 @@ public class FallingPole : MonoBehaviour
     [SerializeField]
     private Vector3 _endingRotation;
 
-    [SerializeField]
-    private float _fallingSpeed = 10.0f;
+    public float FallingSpeed = 10.0f;
 
     [SerializeField]
     private bool _interactable;
@@ -21,9 +20,9 @@ public class FallingPole : MonoBehaviour
     private bool _interactedWith;
 
     // If the pole has already fallen over or not
-    private bool _fallen;
+    public bool Fallen;
 
-    private float _fallingTime;
+    public float FallingTime;
 
     private PlayerControls controls;
 
@@ -41,22 +40,23 @@ public class FallingPole : MonoBehaviour
     {
         _interactedWith = false;
         _interactable = false;
-        _fallen = false;
-        _fallingTime = 0.0f;
+        _startingRotation = gameObject.transform.rotation.eulerAngles;
+        Fallen = false;
+        FallingTime = 0.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_interactedWith && !_fallen)
+        if (_interactedWith && !Fallen)
         {
-            _fallingTime += Time.deltaTime;
+            FallingTime += Time.deltaTime;
             gameObject.transform.rotation = 
                 Quaternion.Slerp(Quaternion.Euler(_startingRotation), 
-                Quaternion.Euler(_endingRotation), _fallingTime * _fallingSpeed);
+                Quaternion.Euler(_endingRotation), FallingTime * FallingSpeed);
             if (gameObject.transform.rotation.Equals(Quaternion.Euler(_endingRotation)))
             {
-                _fallen = true;
+                Fallen = true;
                 InteractionZone iz = gameObject.GetComponentInChildren<InteractionZone>();
                 if (iz != null)
                 {
