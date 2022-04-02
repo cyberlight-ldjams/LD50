@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class WaterLevel : MonoBehaviour
 {
@@ -10,9 +11,11 @@ public class WaterLevel : MonoBehaviour
     [SerializeField]
     private float _risingSpeed;
 
-    //TODO: change to use Zenject
-    [SerializeField]
-    private GameObject player;
+    [Inject]
+    private PlayerMovement player;
+
+    [Inject]
+    private SignalBus sb;
 
     // Start is called before the first frame update
     void Start()
@@ -27,10 +30,11 @@ public class WaterLevel : MonoBehaviour
 
         // If the water level is a unit above the player, they are of the dead,
         // because no can swimmy-swim
-        if ((player.transform.position.y + 1.0f) < gameObject.transform.position.y)
+        if ((player.gameObject.transform.position.y + 1.0f) < gameObject.transform.position.y)
         {
-            //TODO: Fire death event with Zenject
-            Debug.Log("I am of the dead! Bleh!");
+            sb.Fire<DeathSignal>(new DeathSignal()
+                { killer=this.gameObject, message="The player drowned!" });
+            Debug.Log("Le dead");
         }
     }
 }
