@@ -8,6 +8,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Rigidbody _body;
 
+    [SerializeField]
+    private GameObject _cameraLocker;
+
     private Vector2 _move;
 
     [SerializeField]
@@ -16,7 +19,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float _jumpForce = 10.0f;
 
-    [SerializeField]
     private PlayerControls controls;
 
     private bool grounded;
@@ -34,7 +36,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if (grounded)
         {
-            _body.AddForce(_move.x * _speed, 0, _move.y * _speed);
+            Vector3 movement = new Vector3(_move.x * _speed, 0, _move.y * _speed);
+            movement = Quaternion.Euler(0, _cameraLocker.transform.rotation.eulerAngles.y, 0) * movement;
+            _body.AddForce(movement);
         }
         if (Mathf.Abs(_body.velocity.y) > 0.1)
         {
@@ -44,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
         {
             grounded = true;
         }
-        Debug.Log(_body.velocity);
     }
 
     private void OnMove()
