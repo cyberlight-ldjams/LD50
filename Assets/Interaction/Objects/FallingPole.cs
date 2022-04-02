@@ -58,7 +58,6 @@ public class FallingPole : MonoBehaviour
             {
                 _fallen = true;
                 InteractionZone iz = gameObject.GetComponentInChildren<InteractionZone>();
-                Debug.Log(iz);
                 if (iz != null)
                 {
                     iz._notReady = false;
