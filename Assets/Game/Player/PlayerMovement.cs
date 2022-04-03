@@ -81,7 +81,13 @@ public class PlayerMovement : MonoBehaviour
         // Ladder stuff
         if (_ladderStart)
         {
-            gameObject.transform.position = lis.ladderRailBottom;
+            Vector3 railStart = lis.ladderRailBottom;
+            if (gameObject.transform.position.y > lis.ladderRailBottom.y)
+            {
+                railStart = new Vector3(lis.ladderRailBottom.x, 
+                    gameObject.transform.position.y, lis.ladderRailBottom.z);
+            }
+            gameObject.transform.position = railStart;
             controls.Player.Jump.Disable();
             controls.Player.Move.Disable();
             controls.Player.Climb.Enable();
