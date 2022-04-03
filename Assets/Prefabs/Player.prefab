@@ -144,6 +144,7 @@ MonoBehaviour:
   _speed: 10
   _jumpForce: 120
   _playerHeight: 2.1
+  _playerWidth: 1
   _climbSpeed: 1
 --- !u!1 &7910584538195149897
 GameObject:
