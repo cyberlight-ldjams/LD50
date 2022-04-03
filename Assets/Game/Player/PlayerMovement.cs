@@ -62,6 +62,13 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         sb.Subscribe<LadderInteractionSignal>((lis) => { this.lis = lis; _ladderStart = true; });
+
+        // If we have a spawn point in mind, use it
+        GameObject spawnPoint = GameObject.FindGameObjectWithTag("Respawn");
+        if (spawnPoint != null)
+        {
+            gameObject.transform.position = spawnPoint.transform.position;
+        }
     }
 
     void Update()
