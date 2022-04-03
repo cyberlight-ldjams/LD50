@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float _playerHeight = 2.0f;
 
+    [Inject]
     private PlayerControls controls;
 
     [Inject]
@@ -51,10 +52,10 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        controls = new PlayerControls();
         controls.Player.Jump.performed += ctx => OnJump();
         controls.Player.Move.performed += ctx => OnMove();
         controls.Player.Climb.performed += ctx => OnClimb();
+        controls.Player.Enable();
         _ladderStart = false;
     }
 
@@ -165,15 +166,5 @@ public class PlayerMovement : MonoBehaviour
     {
         float movement = controls.Player.Climb.ReadValue<float>();
         forward = movement;
-    }
-
-    private void OnEnable()
-    {
-        controls.Player.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Player.Disable();
     }
 }
