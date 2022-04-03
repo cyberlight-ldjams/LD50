@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 2253217084670898999}
   m_Layer: 0
   m_Name: Breaking Fence
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5945781467157012169}
   m_Layer: 0
   m_Name: FallingPole
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,9 +48,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingRotation: {x: 0, y: 0, z: 0}
   _endingRotation: {x: -67, y: 0, z: 0}
-  _fallingSpeed: 0.6
+  FallingSpeed: 10
   _interactable: 0
   _interactedWith: 0
+  Fallen: 0
+  FallingTime: 0
 --- !u!65 &5945781467157012169
 BoxCollider:
   m_ObjectHideFlags: 0
