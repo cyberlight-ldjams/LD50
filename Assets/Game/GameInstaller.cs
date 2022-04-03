@@ -7,16 +7,14 @@ using System.Linq;
 
 public class GameInstaller : MonoInstaller
 {
-    [SerializeField]
-    private GameObject player;
 
     public override void InstallBindings()
     {
         InstallEvents();
 
-        //Player Based Needs
-        Container.Bind<PlayerMovement>().FromComponentInNewPrefab(player).AsSingle().NonLazy();
+        Container.Bind<GameState>().AsSingle();
         Container.Bind<PlayerControls>().FromInstance(new PlayerControls()).AsSingle();
+
     }
 
 
