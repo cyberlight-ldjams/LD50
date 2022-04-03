@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 public class FallingPole : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class FallingPole : MonoBehaviour
     [SerializeField]
     private Vector3 _endingRotation;
 
-    public float FallingSpeed = 10.0f;
+    public float FallingSpeed = 0.5f;
 
     [SerializeField]
     private bool _interactable;
@@ -24,15 +25,12 @@ public class FallingPole : MonoBehaviour
 
     public float FallingTime;
 
-    private PlayerControls controls;
+    [Inject]
+    private readonly PlayerControls controls;
 
     void Awake()
     {
-        controls = new PlayerControls();
-
         controls.Player.Interact.performed += ctx => OnInteraction();
-
-        OnDisable();
     }
 
     // Start is called before the first frame update
@@ -95,15 +93,5 @@ public class FallingPole : MonoBehaviour
             gameObject.GetComponent<BoxCollider>().enabled = false;
             _interactable = false;
         }
-    }
-
-    private void OnEnable()
-    {
-        controls.Player.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Player.Disable();
     }
 }
