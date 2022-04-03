@@ -516,12 +516,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1699049109971247869}
+  - component: {fileID: 2979579172240203623}
+  - component: {fileID: 1699049109971247870}
   - component: {fileID: 1699049109971247865}
   - component: {fileID: 1699049109971247864}
-  - component: {fileID: 1699049109971247871}
-  - component: {fileID: 1699049109971247870}
   - component: {fileID: 1699049109971247866}
-  - component: {fileID: 2979579172240203623}
+  - component: {fileID: 1699049109971247871}
   m_Layer: 0
   m_Name: LevelEnd
   m_TagString: Untagged
@@ -552,6 +552,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2979579172240203623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699049109971247868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d917bb7e1aad5cd4fafb1925d82b212d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: {fileID: 1699049109575309913}
+  body: {fileID: 1699049108951675999}
+  StatsList: {fileID: 1699049108509087150}
+  Prefab: {fileID: 6039856357787292337, guid: 1ed3b317798ae3f45b76ca2bb24a16e7, type: 3}
+  winColor: {r: 0, g: 0, b: 0, a: 0}
+  loseColor: {r: 0, g: 0, b: 0, a: 0}
+  transitionSpeed: 5
+--- !u!225 &1699049109971247870
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699049109971247868}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!222 &1699049109971247865
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -590,6 +621,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1699049109971247866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699049109971247868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &1699049109971247871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,54 +667,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!225 &1699049109971247870
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699049109971247868}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
---- !u!114 &1699049109971247866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699049109971247868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
---- !u!114 &2979579172240203623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699049109971247868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d917bb7e1aad5cd4fafb1925d82b212d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  title: {fileID: 1699049109575309913}
-  body: {fileID: 1699049108951675999}
-  StatsList: {fileID: 1699049108509087150}
-  Prefab: {fileID: 0}
 --- !u!1 &1699049110210425551
 GameObject:
   m_ObjectHideFlags: 0
