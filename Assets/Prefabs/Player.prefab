@@ -141,8 +141,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _body: {fileID: 7910584538181018656}
   _cameraLocker: {fileID: 7910584538195149897}
-  _speed: 10
-  _jumpForce: 120
+  _speed: 600
+  _jumpForce: 125
   _playerHeight: 2.1
   _playerWidth: 1
   _climbSpeed: 1

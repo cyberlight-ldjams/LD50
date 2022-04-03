@@ -127,7 +127,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (IsGrounded())
         {
-            Vector3 movement = new Vector3(_move.x * _speed, 0, _move.y * _speed);
+            Vector3 movement = new Vector3(_move.x * _speed * Time.fixedDeltaTime, 0, _move.y * _speed * Time.fixedDeltaTime);
             movement = Quaternion.Euler(0, _cameraLocker.transform.rotation.eulerAngles.y, 0) * movement;
             _body.AddForce(movement);
         }
@@ -140,7 +140,9 @@ public class PlayerMovement : MonoBehaviour
         float distance = _playerHeight / 2.0f;
 
         // See if ground is directly below the player
-        if (Physics.Raycast(position, direction, distance)) {
+        if (Physics.Raycast(position, direction, distance))
+        {
+            Debug.DrawRay(position, direction);
             return true;
         }
 
@@ -163,19 +165,37 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Check if the ground is below points in the NE/NW/SE/SW parts of the player
-        else if (Physics.Raycast(position + (new Vector3(0.5f, 0, 0.5f) * _playerWidth), direction, distance))
+        else if (Physics.Raycast(position + (new Vector3(0.25f, 0, 0.25f) * _playerWidth), direction, distance))
         {
             return true;
         }
-        else if (Physics.Raycast(position + (new Vector3(-0.5f, 0, 0.5f) * _playerWidth), direction, distance))
+        else if (Physics.Raycast(position + (new Vector3(-0.25f, 0, 0.25f) * _playerWidth), direction, distance))
         {
             return true;
         }
-        else if (Physics.Raycast(position + (new Vector3(0.5f, 0, -0.5f) * _playerWidth), direction, distance))
+        else if (Physics.Raycast(position + (new Vector3(0.25f, 0, -0.25f) * _playerWidth), direction, distance))
         {
             return true;
         }
-        else if (Physics.Raycast(position + (new Vector3(-0.5f, 0, -0.5f) * _playerWidth), direction, distance))
+        else if (Physics.Raycast(position + (new Vector3(-0.25f, 0, -0.25f) * _playerWidth), direction, distance))
+        {
+            return true;
+        }
+
+        //Check if the ground is below points in the NE/NW/SE/SW parts of the player
+        else if (Physics.Raycast(position + (new Vector3(0.1f, 0, 0.1f) * _playerWidth), direction, distance))
+        {
+            return true;
+        }
+        else if (Physics.Raycast(position + (new Vector3(-0.1f, 0, 0.1f) * _playerWidth), direction, distance))
+        {
+            return true;
+        }
+        else if (Physics.Raycast(position + (new Vector3(0.1f, 0, -0.1f) * _playerWidth), direction, distance))
+        {
+            return true;
+        }
+        else if (Physics.Raycast(position + (new Vector3(-0.1f, 0, -0.1f) * _playerWidth), direction, distance))
         {
             return true;
         }
