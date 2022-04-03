@@ -30,6 +30,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float _playerWidth = 1.0f;
 
+    [SerializeField]
+    private float _maxVelocity = 10.0f;
+
     [Inject]
     private PlayerControls controls;
 
@@ -100,7 +103,6 @@ public class PlayerMovement : MonoBehaviour
         else if (_ladderMode)
         {
             float movement = forward;
-            Debug.Log(Vector3.up * (movement * _climbSpeed * Time.deltaTime));
             gameObject.transform.Translate(Vector3.up * (movement * _climbSpeed * Time.deltaTime));
             if (gameObject.transform.position.y < lis.ladderRailBottom.y)
             {
@@ -133,7 +135,14 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 movement = new Vector3(_move.x * _speed * Time.fixedDeltaTime, 0, _move.y * _speed * Time.fixedDeltaTime);
         movement = Quaternion.Euler(0, _cameraLocker.transform.rotation.eulerAngles.y, 0) * movement;
-        _body.AddForce(movement);
+        
+        // We don't care about velocity if the player is falling
+        Vector3 velocityWithoutY = new Vector3(_body.velocity.x, 0, _body.velocity.z);
+
+        if (velocityWithoutY.magnitude <= _maxVelocity)
+        {
+            _body.AddForce(movement);
+        }
     }
 
     private bool IsGrounded()
