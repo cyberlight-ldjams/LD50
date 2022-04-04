@@ -165,51 +165,65 @@ public class PlayerMovement : MonoBehaviour
     // Gets the angle to the camera from the player relative to player north
     private float GetAngleToCamera()
     {
-        Vector2 north = new Vector2(100000f, gameObject.transform.position.z);
         Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
         Vector2 cameraPos = new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.z);
 
+        // The northpoint (positive X) is a point arbitrarily (effectively infinately) far away
+        // This is used to create a triangle with the player and the camera
+        // The Z of the player is used for the Z of north, as it's directly north of the player
+        Vector2 north = new Vector2(playerPos.x + 100000f, playerPos.y);
+
+        //Constant to rotate the result
         float offset = 90f;
+
+        // Is the camera west of the player?
         if (playerPos.y < cameraPos.y)
         {
+            // If so, invert the offset
             offset = offset * -1;
-            north = new Vector2(north.x * -1, north.y * -1);
-            if (playerPos.x < cameraPos.x)
-            {
-                //north = new Vector2(north.x * -1, north.y * -1);
-            }
+
+            // And have us check relative to the south (negative X) instead of north
+            north = new Vector2(north.x * -1, north.y);
         }
 
-        float pToN = Vector2.Distance(playerPos, north);
-        float pToC = Vector2.Distance(playerPos, cameraPos);
-        float cToN = Vector2.Distance(cameraPos, north);
+        // Build the triange
+        float playerToNorthpoint = Vector2.Distance(playerPos, north);
+        float playerToCamera = Vector2.Distance(playerPos, cameraPos);
+        float cameraToNorthpoint = Vector2.Distance(cameraPos, north);
 
-        //Debug.Log("a2+b2=" + (Mathf.Pow(pToN, 2) + Mathf.Pow(pToC, 2)));
-        //Debug.Log("a2+b2-c2=" + ((Mathf.Pow(pToN, 2) + Mathf.Pow(pToC, 2)) - Mathf.Pow(cToN, 2)));
-        //Debug.Log("2ab=" + (2 * pToN * pToC));
-        float res = ((Mathf.Pow(pToN, 2) + Mathf.Pow(pToC, 2)) - Mathf.Pow(cToN, 2)) / (2 * pToN * pToC);
-        //Debug.Log(res);
-        float ans = 0;
-        if (res != -1f)
+        // Law of Cosines simplified for finding cos(C)
+        // c^2 = a^2 + b^2 - 2ab * cos(C)
+        // cos(C) = (a^2 + b^2 - c^2) / 2ab
+        float cosC = ((Mathf.Pow(playerToNorthpoint, 2) + Mathf.Pow(playerToCamera, 2)) 
+            - Mathf.Pow(cameraToNorthpoint, 2)) / (2 * playerToNorthpoint * playerToCamera);
+        
+        // Avoid taking the arc cosine of -1
+        float answerInRadians = 0;
+        if (cosC != -1f)
         {
-            ans = Mathf.Acos(res);
+            // Take the arc cosine of cos(C)
+            answerInRadians = Mathf.Acos(cosC);
         }
 
-        float deg = ((180f / Mathf.PI) * ans) - offset;
-        //Debug.Log(deg);
-        if (float.IsNaN(deg))
+        // Convert the answer from radians to degrees
+        float answerInDegrees = ((180f / Mathf.PI) * answerInRadians) - offset;
+        
+        // If the result of the conversion is not a number
+        if (float.IsNaN(answerInDegrees))
         {
+            // Check if the camera is directly north of the player
             if (playerPos.x < cameraPos.x)
             {
                 return 270.0f;
             }
+            // Otherwise, it's south of the player
             else
             {
                 return 90.0f;
             }
         }
 
-        return deg;
+        return answerInDegrees;
     }
 
     private bool IsGrounded()
