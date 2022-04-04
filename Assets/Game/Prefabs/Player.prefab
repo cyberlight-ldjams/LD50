@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8557894966236115923}
   m_Layer: 0
   m_Name: GroundDetection
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,6 +154,7 @@ MonoBehaviour:
   _body: {fileID: 2057882282282092759}
   pac: {fileID: 3835396597220311021}
   IsGrounded: 0
+  IsPushing: 0
   _speed: 2000
   _jumpForce: 280
   _maxVelocity: 5
@@ -171,7 +172,7 @@ GameObject:
   - component: {fileID: 2057882282494992233}
   m_Layer: 0
   m_Name: Capsule
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -216,7 +217,7 @@ GameObject:
   - component: {fileID: 8649344013199256330}
   m_Layer: 0
   m_Name: CameraTarget
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -301,6 +302,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 094fa51ad8f166b4bbe99c526838dd48, type: 3}
       propertyPath: m_Name
       value: character_with_hair@Idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 094fa51ad8f166b4bbe99c526838dd48, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 094fa51ad8f166b4bbe99c526838dd48, type: 3}
       propertyPath: m_Avatar
