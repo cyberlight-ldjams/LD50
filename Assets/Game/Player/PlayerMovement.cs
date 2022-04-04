@@ -133,6 +133,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (_ladderEnd)
         {
+            lis.ladder.GetComponent<Ladder>().interactedWith = false;
             _lerpTimer += Time.deltaTime;
             gameObject.transform.position = Vector3.Lerp(_lerpStart, lis.ladderFinish, _lerpTimer);
             if (_lerpTimer >= 1)

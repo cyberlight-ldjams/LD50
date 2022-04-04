@@ -28,22 +28,28 @@ public class Ladder : MonoBehaviour
     [SerializeField]
     private GameObject getOff;
 
+    public bool interactedWith;
+
     // Start is called before the first frame update
     void Awake()
     {
         _interactable = false;
 
         controls.Player.Interact.performed += ctx => OnInteraction();
+
+        interactedWith = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!_interactable)
+        if(!_interactable && !interactedWith)
         {
-            _interactable = true;
             uiManager.InputPrompt.Show(InputPrompt.Prompt.Interact);
 
         }
+        _interactable = true;
+
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -56,12 +62,13 @@ public class Ladder : MonoBehaviour
     {
         if (_interactable)
         {
-
-            uiManager.InputPrompt.Hide();
+            interactedWith = true;
             sb.Fire<LadderInteractionSignal>(new LadderInteractionSignal() 
             { ladder=this.gameObject, ladderRailBottom=bottom.transform.position, 
                 ladderRailTop=top.transform.position, ladderFinish=finish.transform.position,
             getOffLadder=getOff.transform.position});
+            uiManager.InputPrompt.Hide();
+
         }
     }
 }
