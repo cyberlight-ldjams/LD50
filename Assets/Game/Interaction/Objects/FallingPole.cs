@@ -26,6 +26,9 @@ public class FallingPole : MonoBehaviour
     public float FallingTime;
 
     [Inject]
+    private UI uiManager;
+
+    [Inject]
     private readonly PlayerControls controls;
 
     void Awake()
@@ -78,11 +81,14 @@ public class FallingPole : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _interactable = true;
+        uiManager.InputPrompt.Show(InputPrompt.Prompt.Interact);
     }
 
     private void OnTriggerExit(Collider other)
     {
         _interactable = false;
+        uiManager.InputPrompt.Hide();
+
     }
 
     private void OnInteraction()
@@ -92,6 +98,7 @@ public class FallingPole : MonoBehaviour
             _interactedWith = true;
             gameObject.GetComponent<BoxCollider>().enabled = false;
             _interactable = false;
+            uiManager.InputPrompt.Hide();
         }
     }
 }
