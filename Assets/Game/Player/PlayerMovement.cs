@@ -40,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
     [Inject]
     private SignalBus sb;
 
+    [Inject]
+    private UI uiManager;
+
     // // Variables for dealing with moving up ladders // //
     private LadderInteractionSignal lis;
 
@@ -101,7 +104,8 @@ public class PlayerMovement : MonoBehaviour
             _ladderMode = true;
             _body.isKinematic = true;
             forward = 0;
-
+            Debug.Log("On Ladder");
+            uiManager.InputPrompt.Hide();
             pac.SetClimbingLadder();
         }
         else if (_ladderMode)
@@ -116,6 +120,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 _ladderMode = false;
                 _ladderEnd = true;
+                
                 _lerpStart = gameObject.transform.position;
                 _lerpTimer = 0;
             }

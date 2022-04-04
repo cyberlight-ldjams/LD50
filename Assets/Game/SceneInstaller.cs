@@ -18,5 +18,7 @@ public class SceneInstaller : MonoInstaller
             Debug.LogError("There is no player in the hierarchy and no player prefab has been set.");
         }
 
+        Container.Bind<UI>().FromComponentInHierarchy().AsSingle();
+
     }
 }

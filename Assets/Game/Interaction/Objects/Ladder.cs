@@ -11,6 +11,9 @@ public class Ladder : MonoBehaviour
     [Inject]
     private PlayerControls controls;
 
+    [Inject]
+    private UI uiManager;
+
     private bool _interactable;
 
     [SerializeField]
@@ -35,18 +38,26 @@ public class Ladder : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        _interactable = true;
+        if(!_interactable)
+        {
+            _interactable = true;
+            uiManager.InputPrompt.Show(InputPrompt.Prompt.Interact);
+
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         _interactable = false;
+        uiManager.InputPrompt.Hide();
     }
 
     private void OnInteraction()
     {
         if (_interactable)
         {
+
+            uiManager.InputPrompt.Hide();
             sb.Fire<LadderInteractionSignal>(new LadderInteractionSignal() 
             { ladder=this.gameObject, ladderRailBottom=bottom.transform.position, 
                 ladderRailTop=top.transform.position, ladderFinish=finish.transform.position,
