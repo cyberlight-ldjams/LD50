@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _body;
 
     [SerializeField]
-    private GameObject _cameraLocker;
+    private PlayerAnimationController pac;
 
     // Standard player movement when not climbing, balancing, etc.
     private Vector2 _move;
@@ -79,8 +79,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        gameObject.transform.Translate(Vector3.zero);
-
         // Ladder stuff
         if (_ladderStart)
         {
@@ -99,6 +97,8 @@ public class PlayerMovement : MonoBehaviour
             _ladderMode = true;
             _body.isKinematic = true;
             forward = 0;
+
+            pac.SetClimbingLadder();
         }
         else if (_ladderMode)
         {
@@ -107,12 +107,19 @@ public class PlayerMovement : MonoBehaviour
             if (gameObject.transform.position.y < lis.ladderRailBottom.y)
             {
                 gameObject.transform.position = lis.ladderRailBottom;
-            } else if (gameObject.transform.position.y >= lis.ladderRailTop.y)
+            } 
+            else if (gameObject.transform.position.y >= lis.ladderRailTop.y)
             {
                 _ladderMode = false;
                 _ladderEnd = true;
                 _lerpStart = gameObject.transform.position;
                 _lerpTimer = 0;
+            }
+
+            // Once we reach the get-off-ladder point, end the animation
+            if (gameObject.transform.position.y > lis.getOffLadder.y)
+            {
+                pac.SetIdle();
             }
         }
         else if (_ladderEnd)
@@ -127,6 +134,19 @@ public class PlayerMovement : MonoBehaviour
                 controls.Player.Climb.Disable();
                 _body.isKinematic = false;
             }
+        } 
+
+        // If we aren't on a ladder
+        else if (Mathf.Abs(_body.velocity.magnitude) > 0.1f)
+        {
+            pac.SetRunning();
+            if (_move.x != 0 || _move.y != 0)
+            {
+                pac.SetLookRotation(new Vector3(_body.velocity.x, 0, _body.velocity.z));
+            }
+        } else
+        {
+            pac.SetIdle();
         }
     }
 
@@ -136,22 +156,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movement = new Vector3(_move.x * _speed * Time.fixedDeltaTime, 0, _move.y * _speed * Time.fixedDeltaTime);
         float result = GetAngleToCamera();
 
-        try { 
-            movement = Quaternion.Euler(0, result, 0) * movement;
-        } catch (System.Exception e)
-        {
-            // check if the camera is north or south
-            Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
-            Vector2 cameraPos = new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.z);
-
-            if (playerPos.x < cameraPos.x)
-            {
-                //movement = Quaternion.Euler(0, 270.00001f, 0) * movement;
-            } else
-            {
-                //movement = Quaternion.Euler(0, 90.00001f, 0) * movement;
-            }
-        }
+        movement = Quaternion.Euler(0, result, 0) * movement;
         
         // We don't care about velocity if the player is falling
         Vector3 velocityWithoutY = new Vector3(_body.velocity.x, 0, _body.velocity.z);

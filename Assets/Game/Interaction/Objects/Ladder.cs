@@ -22,6 +22,9 @@ public class Ladder : MonoBehaviour
     [SerializeField]
     private GameObject finish;
 
+    [SerializeField]
+    private GameObject getOff;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -46,7 +49,8 @@ public class Ladder : MonoBehaviour
         {
             sb.Fire<LadderInteractionSignal>(new LadderInteractionSignal() 
             { ladder=this.gameObject, ladderRailBottom=bottom.transform.position, 
-                ladderRailTop=top.transform.position, ladderFinish=finish.transform.position });
+                ladderRailTop=top.transform.position, ladderFinish=finish.transform.position,
+            getOffLadder=getOff.transform.position});
         }
     }
 }

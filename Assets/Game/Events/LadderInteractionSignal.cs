@@ -12,4 +12,7 @@ public struct LadderInteractionSignal : IEvent
 
     // Position at the top of the ladder where the player gets off
     public Vector3 ladderFinish;
+
+    // Position where the ladder climbing animation should end
+    public Vector3 getOffLadder;
 }
