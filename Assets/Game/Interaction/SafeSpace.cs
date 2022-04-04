@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 public class SafeSpace : MonoBehaviour
@@ -21,7 +22,9 @@ public class SafeSpace : MonoBehaviour
     {
         if (!isDead)
         {
-            sb.Fire<WinSignal>(new WinSignal() { message = "You escaped in " + Time.realtimeSinceStartup + " seconds!" });
+            SceneManager.LoadScene("Studio Backlot");
+            
+            //sb.Fire<WinSignal>(new WinSignal() { message = "You escaped in " + Time.realtimeSinceStartup + " seconds!" });
         }
     }
 }
