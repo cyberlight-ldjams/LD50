@@ -28,6 +28,7 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetBool("isJumping", false);
         animator.SetBool("isJump", false);
         animator.SetBool("isBalancing", false);
+        animator.SetBool("isClimbingToTop", false);
     }
 
     public void SetIdle()
@@ -51,6 +52,12 @@ public class PlayerAnimationController : MonoBehaviour
     {
         SetAllFalse();
         animator.SetBool("isClimbingLadder", true);
+    }
+
+    public void SetClimbingToTop()
+    {
+        SetAllFalse();
+        animator.SetBool("isClimbingToTop", true);
     }
 
     public void SetPushing()

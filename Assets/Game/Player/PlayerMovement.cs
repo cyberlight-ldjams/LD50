@@ -143,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
             // Once we reach the get-off-ladder point, end the animation
             if (gameObject.transform.position.y > lis.getOffLadder.y)
             {
-                pac.SetIdle();
+                pac.SetClimbingToTop();
             }
         }
         else if (_ladderEnd)
@@ -158,6 +158,7 @@ public class PlayerMovement : MonoBehaviour
                 controls.Player.Move.Enable();
                 controls.Player.Climb.Disable();
                 _body.isKinematic = false;
+                pac.SetIdle();
             }
         } 
 
