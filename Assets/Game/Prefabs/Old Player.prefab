@@ -1,5 +1,62 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &645483897652343536
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3466643571794931779}
+  - component: {fileID: 3614311869554411632}
+  - component: {fileID: 1937467516723066193}
+  m_Layer: 0
+  m_Name: GroundDetection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3466643571794931779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645483897652343536}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.81, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7910584538181018662}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3614311869554411632
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645483897652343536}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6666667, y: 0.1, z: 0.6666667}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1937467516723066193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645483897652343536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69181c40be701e94d9e4edfa663fa251, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7910584537555121048
 GameObject:
   m_ObjectHideFlags: 0
@@ -25,7 +82,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7910584537555121048}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7910584538181018662}
@@ -42,7 +99,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.33
-  m_Height: 1.5
+  m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7910584538181018659
@@ -57,6 +114,7 @@ GameObject:
   - component: {fileID: 7910584538181018657}
   - component: {fileID: 7910584538181018656}
   - component: {fileID: 7910584538181018663}
+  - component: {fileID: 1103640065}
   m_Layer: 0
   m_Name: Old Player
   m_TagString: Player
@@ -78,6 +136,7 @@ Transform:
   - {fileID: 3931276991701019460}
   - {fileID: 7910584537555121049}
   - {fileID: 7910584538195149902}
+  - {fileID: 3466643571794931779}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -141,12 +200,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _body: {fileID: 7910584538181018656}
   pac: {fileID: 4935113220144386842}
+  IsGrounded: 0
   _speed: 2000
-  _jumpForce: 125
-  _playerHeight: 2.1
-  _playerWidth: 1
+  _jumpForce: 280
   _maxVelocity: 5
+  _jumpDelay: 0.5
   _climbSpeed: 1
+--- !u!95 &1103640065
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7910584538181018659}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 67481e6ddcff6cd48a2b50ccf6c4641e, type: 3}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7910584538195149897
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,7 +383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 094fa51ad8f166b4bbe99c526838dd48, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.78
+      value: -0.74
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 094fa51ad8f166b4bbe99c526838dd48, type: 3}
       propertyPath: m_LocalPosition.z

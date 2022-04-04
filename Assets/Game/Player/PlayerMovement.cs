@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
     // Forward movement for climbing, balancing, and shimmying
     private float forward;
 
+    public bool IsGrounded;
+
     [SerializeField]
     private float _speed = 10.0f;
 
@@ -25,13 +27,12 @@ public class PlayerMovement : MonoBehaviour
     private float _jumpForce = 10.0f;
 
     [SerializeField]
-    private float _playerHeight = 2.0f;
-
-    [SerializeField]
-    private float _playerWidth = 1.0f;
-
-    [SerializeField]
     private float _maxVelocity = 10.0f;
+
+    [SerializeField]
+    private float _jumpDelay = 0.1f;
+
+    private float _timeSinceJump;
 
     [Inject]
     private PlayerControls controls;
@@ -75,6 +76,9 @@ public class PlayerMovement : MonoBehaviour
         {
             gameObject.transform.position = spawnPoint.transform.position;
         }
+
+        IsGrounded = true;
+        _timeSinceJump = 0f;
     }
 
     void Update()
@@ -165,6 +169,8 @@ public class PlayerMovement : MonoBehaviour
         {
             _body.AddForce(movement);
         }
+
+        _timeSinceJump += Time.fixedDeltaTime;
     }
 
     // Gets the angle to the camera from the player relative to player north
@@ -231,116 +237,6 @@ public class PlayerMovement : MonoBehaviour
         return answerInDegrees;
     }
 
-    private bool IsGrounded()
-    {
-        Vector3 position = gameObject.transform.position;
-        Vector3 direction = Vector3.down;
-        float distance = _playerHeight / 2.0f;
-
-        // See if ground is directly below the player
-        if (Physics.Raycast(position, direction, distance))
-        {
-            Debug.DrawRay(position, direction);
-            return true;
-        }
-
-        // See if the ground is below points in the north/south/east/west parts of the player
-        else if (Physics.Raycast(position + (Vector3.forward * .5f * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (Vector3.back * .5f * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (Vector3.left * .5f * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (Vector3.right * .5f * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-
-        //Check if the ground is below points in the NE/NW/SE/SW parts of the player
-        else if (Physics.Raycast(position + (new Vector3(0.25f, 0, 0.25f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (new Vector3(-0.25f, 0, 0.25f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (new Vector3(0.25f, 0, -0.25f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (new Vector3(-0.25f, 0, -0.25f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-
-        //Check if the ground is below points in the NE/NW/SE/SW parts of the player
-        else if (Physics.Raycast(position + (new Vector3(0.1f, 0, 0.1f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (new Vector3(-0.1f, 0, 0.1f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (new Vector3(0.1f, 0, -0.1f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (new Vector3(-0.1f, 0, -0.1f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-
-        // See if the ground is below the north/south/east/west points of the player
-        else if (Physics.Raycast(position + (Vector3.forward * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (Vector3.back * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (Vector3.left * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (Vector3.right * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-
-        //Check if the ground is below the NE/NW/SE/SW points of the player
-        else if (Physics.Raycast(position + (new Vector3(0.7071f, 0, 0.7071f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (new Vector3(-0.7071f, 0, 0.7071f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (new Vector3(0.7071f, 0, -0.7071f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-        else if (Physics.Raycast(position + (new Vector3(-0.7071f, 0, -0.7071f) * _playerWidth), direction, distance))
-        {
-            return true;
-        }
-
-        //Guess there's no ground below the player... probs...
-        else
-        {
-            return false;
-        }
-    }
-
     private void OnMove()
     {
         Vector2 movement = controls.Player.Move.ReadValue<Vector2>();
@@ -350,9 +246,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump()
     {
-        if (IsGrounded())
+        if (IsGrounded && _timeSinceJump > _jumpDelay)
         {
             _body.AddForce(0, _jumpForce, 0);
+            Debug.Log(_timeSinceJump);
+            _timeSinceJump = 0f;
         }
     }
 
