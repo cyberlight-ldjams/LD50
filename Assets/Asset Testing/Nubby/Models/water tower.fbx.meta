@@ -1,29 +1,9 @@
 fileFormatVersion: 2
-guid: 6b30debe3979cec4abca2385655d7c3a
+guid: 7dee1b951ee0a5e47a8ef5e71c8af3c6
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Glass
-    second: {fileID: 2100000, guid: 399464ae0fc3cd744b3380eca0896ea7, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Phantom_Black
-    second: {fileID: 2100000, guid: f65aae4fd764dfb4682e807d1c093fb9, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Structural
-    second: {fileID: 2100000, guid: 051561ea165b613458dbbd78cc4b76e1, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Tire_Rubber
-    second: {fileID: 2100000, guid: 3ac9388d360a045489aabe97499b8d1a, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
