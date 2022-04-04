@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 7910584537555121054}
   m_Layer: 0
   m_Name: Capsule
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -201,6 +201,7 @@ MonoBehaviour:
   _body: {fileID: 7910584538181018656}
   pac: {fileID: 4935113220144386842}
   IsGrounded: 0
+  IsPushing: 0
   _speed: 2000
   _jumpForce: 280
   _maxVelocity: 5
