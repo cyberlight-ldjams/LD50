@@ -107,18 +107,24 @@ public class PlayerMovement : MonoBehaviour
             if (gameObject.transform.position.y < lis.ladderRailBottom.y)
             {
                 gameObject.transform.position = lis.ladderRailBottom;
-            } else if (gameObject.transform.position.y >= lis.ladderRailTop.y)
+            } 
+            else if (gameObject.transform.position.y >= lis.ladderRailTop.y)
             {
                 _ladderMode = false;
                 _ladderEnd = true;
                 _lerpStart = gameObject.transform.position;
                 _lerpTimer = 0;
             }
+
+            // Once we reach the get-off-ladder point, end the animation
+            if (gameObject.transform.position.y > lis.getOffLadder.y)
+            {
+                pac.SetIdle();
+            }
         }
         else if (_ladderEnd)
         {
             _lerpTimer += Time.deltaTime;
-            pac.SetIdle();
             gameObject.transform.position = Vector3.Lerp(_lerpStart, lis.ladderFinish, _lerpTimer);
             if (_lerpTimer >= 1)
             {
