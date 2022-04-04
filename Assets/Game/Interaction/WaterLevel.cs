@@ -17,10 +17,14 @@ public class WaterLevel : MonoBehaviour
     [Inject]
     private SignalBus sb;
 
+    private bool playerDead;
+
     // Start is called before the first frame update
     void Start()
     {
         gameObject.transform.position = _startingLevel;
+        playerDead = false;
+        sb.Subscribe<DeathSignal>(() => { playerDead = true; });
     }
 
     // Update is called once per frame
@@ -30,7 +34,7 @@ public class WaterLevel : MonoBehaviour
 
         // If the water level is a unit above the player, they are of the dead,
         // because no can swimmy-swim
-        if ((player.gameObject.transform.position.y + 1.0f) < gameObject.transform.position.y)
+        if (!playerDead && (player.gameObject.transform.position.y + 1.0f) < gameObject.transform.position.y)
         {
             sb.Fire<DeathSignal>(new DeathSignal()
                 { killer=this.gameObject, message="The player drowned!" });
