@@ -1,2 +1,1 @@
-Running has mesh / skin. 
-All other animations are just animating the rig in "Running". (set avatar)
+Updated Model is in Dwarf Idle animation. 
