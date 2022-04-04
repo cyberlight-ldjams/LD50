@@ -134,7 +134,24 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 movement = new Vector3(_move.x * _speed * Time.fixedDeltaTime, 0, _move.y * _speed * Time.fixedDeltaTime);
-        movement = Quaternion.Euler(0, _cameraLocker.transform.rotation.eulerAngles.y, 0) * movement;
+        float result = GetAngleToCamera();
+
+        try { 
+            movement = Quaternion.Euler(0, result, 0) * movement;
+        } catch (System.Exception e)
+        {
+            // check if the camera is north or south
+            Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
+            Vector2 cameraPos = new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.z);
+
+            if (playerPos.x < cameraPos.x)
+            {
+                //movement = Quaternion.Euler(0, 270.00001f, 0) * movement;
+            } else
+            {
+                //movement = Quaternion.Euler(0, 90.00001f, 0) * movement;
+            }
+        }
         
         // We don't care about velocity if the player is falling
         Vector3 velocityWithoutY = new Vector3(_body.velocity.x, 0, _body.velocity.z);
@@ -143,6 +160,70 @@ public class PlayerMovement : MonoBehaviour
         {
             _body.AddForce(movement);
         }
+    }
+
+    // Gets the angle to the camera from the player relative to player north
+    private float GetAngleToCamera()
+    {
+        Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
+        Vector2 cameraPos = new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.z);
+
+        // The northpoint (positive X) is a point arbitrarily (effectively infinately) far away
+        // This is used to create a triangle with the player and the camera
+        // The Z of the player is used for the Z of north, as it's directly north of the player
+        Vector2 north = new Vector2(playerPos.x + 100000f, playerPos.y);
+
+        //Constant to rotate the result
+        float offset = 90f;
+
+        // Is the camera west of the player?
+        if (playerPos.y < cameraPos.y)
+        {
+            // If so, invert the offset
+            offset = offset * -1;
+
+            // And have us check relative to the south (negative X) instead of north
+            north = new Vector2(north.x * -1, north.y);
+        }
+
+        // Build the triange
+        float playerToNorthpoint = Vector2.Distance(playerPos, north);
+        float playerToCamera = Vector2.Distance(playerPos, cameraPos);
+        float cameraToNorthpoint = Vector2.Distance(cameraPos, north);
+
+        // Law of Cosines simplified for finding cos(C)
+        // c^2 = a^2 + b^2 - 2ab * cos(C)
+        // cos(C) = (a^2 + b^2 - c^2) / 2ab
+        float cosC = ((Mathf.Pow(playerToNorthpoint, 2) + Mathf.Pow(playerToCamera, 2)) 
+            - Mathf.Pow(cameraToNorthpoint, 2)) / (2 * playerToNorthpoint * playerToCamera);
+        
+        // Avoid taking the arc cosine of -1
+        float answerInRadians = 0;
+        if (cosC != -1f)
+        {
+            // Take the arc cosine of cos(C)
+            answerInRadians = Mathf.Acos(cosC);
+        }
+
+        // Convert the answer from radians to degrees
+        float answerInDegrees = ((180f / Mathf.PI) * answerInRadians) - offset;
+        
+        // If the result of the conversion is not a number
+        if (float.IsNaN(answerInDegrees))
+        {
+            // Check if the camera is directly north of the player
+            if (playerPos.x < cameraPos.x)
+            {
+                return 270.0f;
+            }
+            // Otherwise, it's south of the player
+            else
+            {
+                return 90.0f;
+            }
+        }
+
+        return answerInDegrees;
     }
 
     private bool IsGrounded()
