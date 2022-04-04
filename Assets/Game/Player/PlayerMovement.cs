@@ -134,7 +134,24 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 movement = new Vector3(_move.x * _speed * Time.fixedDeltaTime, 0, _move.y * _speed * Time.fixedDeltaTime);
-        movement = Quaternion.Euler(0, _cameraLocker.transform.rotation.eulerAngles.y, 0) * movement;
+        float result = GetAngleToCamera();
+
+        try { 
+            movement = Quaternion.Euler(0, result, 0) * movement;
+        } catch (System.Exception e)
+        {
+            // check if the camera is north or south
+            Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
+            Vector2 cameraPos = new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.z);
+
+            if (playerPos.x < cameraPos.x)
+            {
+                //movement = Quaternion.Euler(0, 270.00001f, 0) * movement;
+            } else
+            {
+                //movement = Quaternion.Euler(0, 90.00001f, 0) * movement;
+            }
+        }
         
         // We don't care about velocity if the player is falling
         Vector3 velocityWithoutY = new Vector3(_body.velocity.x, 0, _body.velocity.z);
@@ -143,6 +160,56 @@ public class PlayerMovement : MonoBehaviour
         {
             _body.AddForce(movement);
         }
+    }
+
+    // Gets the angle to the camera from the player relative to player north
+    private float GetAngleToCamera()
+    {
+        Vector2 north = new Vector2(100000f, gameObject.transform.position.z);
+        Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
+        Vector2 cameraPos = new Vector2(Camera.main.transform.position.x, Camera.main.transform.position.z);
+
+        float offset = 90f;
+        if (playerPos.y < cameraPos.y)
+        {
+            offset = offset * -1;
+            north = new Vector2(north.x * -1, north.y * -1);
+            if (playerPos.x < cameraPos.x)
+            {
+                //north = new Vector2(north.x * -1, north.y * -1);
+            }
+        }
+
+        float pToN = Vector2.Distance(playerPos, north);
+        float pToC = Vector2.Distance(playerPos, cameraPos);
+        float cToN = Vector2.Distance(cameraPos, north);
+
+        //Debug.Log("a2+b2=" + (Mathf.Pow(pToN, 2) + Mathf.Pow(pToC, 2)));
+        //Debug.Log("a2+b2-c2=" + ((Mathf.Pow(pToN, 2) + Mathf.Pow(pToC, 2)) - Mathf.Pow(cToN, 2)));
+        //Debug.Log("2ab=" + (2 * pToN * pToC));
+        float res = ((Mathf.Pow(pToN, 2) + Mathf.Pow(pToC, 2)) - Mathf.Pow(cToN, 2)) / (2 * pToN * pToC);
+        //Debug.Log(res);
+        float ans = 0;
+        if (res != -1f)
+        {
+            ans = Mathf.Acos(res);
+        }
+
+        float deg = ((180f / Mathf.PI) * ans) - offset;
+        //Debug.Log(deg);
+        if (float.IsNaN(deg))
+        {
+            if (playerPos.x < cameraPos.x)
+            {
+                return 270.0f;
+            }
+            else
+            {
+                return 90.0f;
+            }
+        }
+
+        return deg;
     }
 
     private bool IsGrounded()
