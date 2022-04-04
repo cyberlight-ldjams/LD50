@@ -23,6 +23,11 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetBool("isIdle", false);
         animator.SetBool("isRunning", false);
         animator.SetBool("isClimbingLadder", false);
+        animator.SetBool("isClimbingRope", false);
+        animator.SetBool("isPushing", false);
+        animator.SetBool("isJumping", false);
+        animator.SetBool("isJump", false);
+        animator.SetBool("isBalancing", false);
     }
 
     public void SetIdle()
@@ -46,5 +51,27 @@ public class PlayerAnimationController : MonoBehaviour
     {
         SetAllFalse();
         animator.SetBool("isClimbingLadder", true);
+    }
+
+    public void SetPushing()
+    {
+        SetAllFalse();
+        animator.SetBool("isPushing", true);
+    }
+
+    public bool IsPushing()
+    {
+        return animator.GetBool("isPushing");
+    }
+
+    public void SetJump()
+    {
+        SetAllFalse();
+        animator.SetBool("isJump", true);
+    }
+
+    public bool IsJump()
+    {
+        return animator.GetBool("isJump");
     }
 }

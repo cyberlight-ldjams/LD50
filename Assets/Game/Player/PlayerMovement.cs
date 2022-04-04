@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsGrounded;
 
+    public bool IsPushing;
+
     [SerializeField]
     private float _speed = 10.0f;
 
@@ -86,6 +88,16 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (IsPushing && !pac.IsPushing())
+        {
+            pac.SetPushing();
+        } else
+        // If we're back on the ground after jumping, set our animation to idle
+        if (IsGrounded && pac.IsJump() && _timeSinceJump > _jumpDelay)
+        {
+            pac.SetIdle();
+        }
+
         // Ladder stuff
         if (_ladderStart)
         {
@@ -96,6 +108,9 @@ public class PlayerMovement : MonoBehaviour
                     gameObject.transform.position.y, lis.ladderRailBottom.z);
             }
             gameObject.transform.position = railStart;
+            pac.SetLookRotation(new Vector3(
+                -gameObject.transform.position.x + lis.ladder.transform.position.x, 0,
+                -gameObject.transform.position.z + lis.ladder.transform.position.z));
             controls.Player.Jump.Disable();
             controls.Player.Move.Disable();
             controls.Player.Climb.Enable();
@@ -149,12 +164,16 @@ public class PlayerMovement : MonoBehaviour
         // If we aren't on a ladder
         else if (Mathf.Abs(_body.velocity.magnitude) > 0.1f)
         {
-            pac.SetRunning();
+            if (IsGrounded && !pac.IsJump() && !pac.IsPushing())
+            {
+                pac.SetRunning();
+            }
             if (_move.x != 0 || _move.y != 0)
             {
                 pac.SetLookRotation(new Vector3(_body.velocity.x, 0, _body.velocity.z));
             }
-        } else
+        } 
+        else if (IsGrounded && !IsPushing)
         {
             pac.SetIdle();
         }
@@ -257,6 +276,7 @@ public class PlayerMovement : MonoBehaviour
             _body.AddForce(0, _jumpForce, 0);
             Debug.Log(_timeSinceJump);
             _timeSinceJump = 0f;
+            //pac.SetJump();
         }
     }
 
