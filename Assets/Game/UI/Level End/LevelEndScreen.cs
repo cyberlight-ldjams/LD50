@@ -87,7 +87,7 @@ public class LevelEndScreen : MonoBehaviour
         body.text = data.message;
         background.color = winColor;
 
-        Statistic[] stats = new Statistic[] {
+        _stats = new Statistic[] {
             new Statistic
             {
                 Name = "Attempts:",
@@ -130,7 +130,7 @@ public class LevelEndScreen : MonoBehaviour
         if (show)
         {
             //Todo: replace this with actual logic to grab relevant stats.
-            GetStats();
+            //GetStats();
 
             foreach (Statistic statistic in _stats)
             {

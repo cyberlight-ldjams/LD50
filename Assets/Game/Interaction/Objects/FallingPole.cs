@@ -97,8 +97,6 @@ public class FallingPole : MonoBehaviour
     {
         if (_interactable)
         {
-
-            GetComponent<AudioSource>().Play();
             _interactedWith = true;
             gameObject.GetComponent<BoxCollider>().enabled = false;
             _interactable = false;
