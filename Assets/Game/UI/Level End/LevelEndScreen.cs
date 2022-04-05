@@ -20,6 +20,11 @@ public class LevelEndScreen : MonoBehaviour
     [SerializeField]
     private float transitionSpeed = 5f;
 
+    [SerializeField]
+    private Button retry, quit;
+
+    [Inject]
+    private GameState gameState;
 
     [Inject]
     private readonly SignalBus _bus;
@@ -39,6 +44,14 @@ public class LevelEndScreen : MonoBehaviour
         _bus.Subscribe<WinSignal>(OnWin);
         background = GetComponent<Image>();
         faderGroup = GetComponent<CanvasGroup>();
+
+        retry.onClick.AddListener(() => gameState.OnRestart());
+        quit.onClick.AddListener(() => gameState.OnQuit());
+
+        if(Application.isEditor || Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            quit.enabled = false;
+        }
     }
 
     private void OnDeath(DeathSignal data)
@@ -47,19 +60,24 @@ public class LevelEndScreen : MonoBehaviour
         body.text = data.message;
         background.color = loseColor;
 
+        _stats = new Statistic[] {
+            new Statistic
+            {
+                Name = "Attempts:",
+                Amount = PlayerPrefs.GetInt("attemptCount", 1) + "",
+            },
+            new Statistic
+            {
+                Amount = Time.realtimeSinceStartup + " seconds",
+                Name = "Drown In:"
+            }
+        };
+
         ShowPanel(true);
     }
 
     private void GetStats()
     {
-        //TODO: Update this to pull dynamic _stats
-        _stats = new Statistic[] {
-            new Statistic { Name = "Test Stat", Amount = "100%" },
-            new Statistic { Name = "Life", Amount = "42" },
-            new Statistic { Name = "Universe", Amount = "42" },
-            new Statistic { Name = "Everything", Amount = "42" }
-            };
-
 
     }
 
@@ -68,6 +86,19 @@ public class LevelEndScreen : MonoBehaviour
         title.text = "Congratulations";
         body.text = data.message;
         background.color = winColor;
+
+        Statistic[] stats = new Statistic[] {
+            new Statistic
+            {
+                Name = "Attempts:",
+                Amount = PlayerPrefs.GetInt("attemptCount", 1) +"",
+            },
+            new Statistic
+            {
+                Amount = Time.realtimeSinceStartup + " seconds",
+                Name = "Completed In:"
+            }
+        };
 
         ShowPanel(true);
     }

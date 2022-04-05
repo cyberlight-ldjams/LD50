@@ -31,6 +31,8 @@ public class FallingPole : MonoBehaviour
     [Inject]
     private readonly PlayerControls controls;
 
+
+
     void Awake()
     {
         controls.Player.Interact.performed += ctx => OnInteraction();
@@ -95,6 +97,8 @@ public class FallingPole : MonoBehaviour
     {
         if (_interactable)
         {
+
+            GetComponent<AudioSource>().Play();
             _interactedWith = true;
             gameObject.GetComponent<BoxCollider>().enabled = false;
             _interactable = false;
