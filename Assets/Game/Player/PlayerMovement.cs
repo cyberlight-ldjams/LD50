@@ -119,7 +119,6 @@ public class PlayerMovement : MonoBehaviour
             _ladderMode = true;
             _body.isKinematic = true;
             forward = 0;
-            Debug.Log("On Ladder");
             uiManager.InputPrompt.Hide();
             pac.SetClimbingLadder();
         }

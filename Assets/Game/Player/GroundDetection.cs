@@ -10,7 +10,7 @@ public class GroundDetection : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        pm.IsGrounded = IsGrounded(other);
+        pm.IsGrounded = true;
     }
 
     private void OnTriggerExit(Collider other)
@@ -22,13 +22,13 @@ public class GroundDetection : MonoBehaviour
     {
         if (!pm.IsGrounded)
         {
-            pm.IsGrounded = IsGrounded(other);
+            pm.IsGrounded = true;
         }
     }
 
-    private bool IsGrounded(Collider collider)
-    {
-        Vector3 point = collider.ClosestPointOnBounds(pm.transform.position);
-        return (collider.bounds.center.y < point.y);
-    }
+    //private bool IsGrounded(Collider collider)
+    //{
+    //    Vector3 point = collider.ClosestPointOnBounds(pm.transform.position);
+    //    return (collider.bounds.center.y < point.y);
+    //}
 }
